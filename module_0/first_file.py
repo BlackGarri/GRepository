@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[20]:
+# In[7]:
 
 
 import numpy as np
 
 
-def game_score_my_ver(number, fpred=False):
+def game_score_my_ver(number, fpred=False, low=1, high=100):
     '''Алгоритм по модулю 0 для поиска загаданного числа с применением бинарного поиска.   
        Первоначальное число для сравнения с загаданным может определяется рандомным способом или устанавливаться
        по середине диапазона сравнения
@@ -15,21 +15,19 @@ def game_score_my_ver(number, fpred=False):
     '''
 
     count = 1
-    low, high = 1, 100
     
-    if number != low and number != high:
-        if fpred:
-            predict = (low + high)//2  # вычисление среднего числа для определения диапазона сравнения
+    if fpred:
+        predict = (low + high)//2  # использование среднего числа диапазона для определения уточненного диапазона поиска
+    else:
+        predict = np.random.randint(1,101) # генерация случайного числа для определения уточненного диапазона поиска
+    
+    while number != predict and number != low and number != high:
+        count += 1
+        if number > predict:
+            low = predict + 1
         else:
-            predict = np.random.randint(1,101) # генерация случайного числа для определения диапазона сравнения
-
-        while number != predict:
-            count += 1
-            if number > predict:
-                low = predict + 1
-            else:
-                high = predict - 1
-            predict = (low + high)//2
+            high = predict - 1
+        predict = (low + high)//2
     
     return(count) 
         
